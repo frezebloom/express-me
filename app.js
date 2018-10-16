@@ -4,6 +4,7 @@ const path = require("path");
 const staticAsset = require("static-asset");
 const config = require("./config");
 const database = require("./database.js");
+const routes = require("./routes");
 
 //express
 const app = express();
@@ -20,6 +21,7 @@ database()
 //sets and uses
 app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 app.use(staticAsset(path.join(__dirname, "public")));
 app.use(express.static(path.join(__dirname, "public")));
 app.use(
@@ -27,10 +29,12 @@ app.use(
   express.static(path.join(__dirname, "node_modules", "jquery", "dist"))
 );
 
-//routers
+//routes
 app.get("/", (req, res) => {
   res.render("index");
 });
+
+app.use("/api/auth/", routes.auth);
 
 //catch 404 and forward to error handler
 app.use((req, res, next) => {
