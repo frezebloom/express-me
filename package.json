@@ -4,7 +4,7 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "start": "cross-env PORT=3001 node app.js",
+    "start": "node app.js",
     "dev": "gulp & nodemon app.js"
   },
   "engines": {
@@ -25,7 +25,7 @@
   },
   "dependencies": {
     "body-parser": "^1.18.3",
-    "cross-env": "^5.2.0",
+    "dotenv": "^6.1.0",
     "ejs": "^2.6.1",
     "express": "^4.16.3",
     "jquery": "^3.3.1",
