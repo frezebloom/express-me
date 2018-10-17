@@ -1,7 +1,7 @@
 /* eslint-disable no-undef */
 $(function() {
+  // toggle
   var flag = true;
-
   $(".switch-button").on("click", function(e) {
     e.preventDefault();
 
@@ -20,13 +20,10 @@ $(function() {
     }
   });
 
-  /* eslint-enable no-undef */
-
-  //clear
-  $("input").on("focus", function() {
-    $("p.error").remove();
-    $("p.success").remove();
-    $("input").removeClass("error");
+  // clear
+  $("form.login input, form.register input").on("focus", function() {
+    $("form.login p.error, form.register p.error").remove();
+    $("form.login input, form.register input").removeClass("error");
   });
 
   // register
@@ -45,7 +42,7 @@ $(function() {
       type: "POST",
       data: JSON.stringify(data),
       contentType: "application/json",
-      url: "api/auth/register"
+      url: "/api/auth/register"
     }).done(function(data) {
       if (!data.ok) {
         $(".register h2").after('<p class="error">' + data.error + "</p>");
@@ -55,15 +52,17 @@ $(function() {
           });
         }
       } else {
-        // $(".register h2").after('<p class="success">Отлично!</p>');
+        // $('.register h2').after('<p class="success">Отлично!</p>');
         $(location).attr("href", "/");
       }
     });
   });
 
-  //login
+  // login
   $(".login-button").on("click", function(e) {
     e.preventDefault();
+    $("p.error").remove();
+    $("input").removeClass("error");
 
     var data = {
       login: $("#login-login").val(),
@@ -74,7 +73,7 @@ $(function() {
       type: "POST",
       data: JSON.stringify(data),
       contentType: "application/json",
-      url: "api/auth/login"
+      url: "/api/auth/login"
     }).done(function(data) {
       if (!data.ok) {
         $(".login h2").after('<p class="error">' + data.error + "</p>");
@@ -84,9 +83,11 @@ $(function() {
           });
         }
       } else {
-        // $(".login h2").after('<p class="success">Отлично!</p>');
+        // $('.login h2').after('<p class="success">Отлично!</p>');
         $(location).attr("href", "/");
       }
     });
   });
 });
+
+/* eslint-enable no-undef */

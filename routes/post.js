@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const TurndownService = require("turndown");
 
 const models = require("../models");
 
@@ -18,10 +19,50 @@ router.get("/add", (req, res) => {
 });
 
 router.post("/add", (req, res) => {
-  console.log(req.body);
-  res.json({
-    ok: true
-  });
+  const title = req.body.title.trim().replace(/ +(?= )/g, "");
+  const body = req.body.body;
+  const turndownService = new TurndownService();
+
+  if (!title || !body) {
+    const fields = [];
+    if (!title) fields.push("title");
+    if (!body) fields.push("body");
+
+    res.json({
+      ok: false,
+      error: "Все поля должны быть заполнены!",
+      fields
+    });
+  } else if (title.length < 3 || title.length > 64) {
+    res.json({
+      ok: false,
+      error: "Длина заголовка от 3 до 64 символов!",
+      fields: ["title"]
+    });
+  } else if (title.length < 3) {
+    res.json({
+      ok: false,
+      error: "Текс не менее 3 символов!",
+      fields: ["body"]
+    });
+  } else {
+    models.Post.create({
+      title,
+      body: turndownService.turndown(body)
+    })
+      .then(post => {
+        console.log(post);
+        res.json({
+          ok: true
+        });
+      })
+      .catch(error => {
+        console.log(error);
+        res.json({
+          ok: false
+        });
+      });
+  }
 });
 
 module.exports = router;

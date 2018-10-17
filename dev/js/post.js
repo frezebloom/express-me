@@ -9,8 +9,6 @@ $(function() {
   //publish
   $(".publish-button").on("click", function(e) {
     e.preventDefault();
-    $("p.error").remove();
-    $("input").removeClass("error");
 
     var data = {
       title: $("#post-title").val(),
@@ -23,17 +21,17 @@ $(function() {
       contentType: "application/json",
       url: "/post/add"
     }).done(function(data) {
+      console.log(data);
       if (!data.ok) {
-        console.log(data);
-        // $(".login h2").after('<p class="error">' + data.error + "</p>");
-        // if (data.fields) {
-        //   data.fields.forEach(function(item) {
-        //     $("input[name=" + item + "]").addClass("error");
-        //   });
-        // }
+        $(".post-form h2").after('<p class="error">' + data.error + "</p>");
+        if (data.fields) {
+          data.fields.forEach(function(item) {
+            $("#post-" + item).addClass("error");
+          });
+        }
       } else {
-        // $(".login h2").after('<p class="success">Отлично!</p>');
-        // $(location).attr("href", "/");
+        // $('.register h2').after('<p class="success">Отлично!</p>');
+        $(location).attr("href", "/");
       }
     });
   });
