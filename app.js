@@ -50,18 +50,7 @@ app.use(
 );
 
 //routes
-app.get("/", (req, res) => {
-  const id = req.session.userId;
-  const login = req.session.userLogin;
-
-  res.render("index", {
-    user: {
-      id,
-      login
-    }
-  });
-});
-
+app.use("/", routes.archive);
 app.use("/api/auth/", routes.auth);
 app.use("/post", routes.post);
 
