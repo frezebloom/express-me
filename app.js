@@ -15,6 +15,7 @@ const app = express();
 //database
 database()
   .then(() => {
+    // require("./mocks")();
     console.log(`Connected to database`);
   })
   .catch(error => {
