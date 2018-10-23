@@ -1,5 +1,7 @@
 const express = require("express");
 const router = express.Router();
+const moment = require("moment");
+moment.locale("ru");
 
 const config = require("../config");
 const models = require("../models");
@@ -56,8 +58,15 @@ router.get("/posts/:post", async (req, res, next) => {
         err.status = 404;
         next(err);
       } else {
+        const comments = await models.Comment.find({
+          post: post.id,
+          parent: { $exists: false }
+        });
+
         res.render("post/post", {
           post,
+          comments,
+          moment,
           user: {
             id: userId,
             login: userLogin
